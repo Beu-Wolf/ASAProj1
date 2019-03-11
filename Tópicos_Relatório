@@ -4,5 +4,13 @@ Trabalhar em cada sub grafo e encontrar pontes (arestas) https://cp-algorithms.c
     -> Vertices com mais q 1 aresta criam mais sub-grafos, pq os outros componentes ligados a ele criam o seu próprio grafo, ou o algoritmo não identificava como ponte
     -> Qualquer vértice da ponte com mais de 1 aresta e removível.
 
+Reparamos que este algori não funciona para dadas situacoes (https://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf - Slide 10 - Vertice D não tem nenhuma ponte mas se retirado, aumenta o número de subgrafos)
+por isso mudamos de abordagem
+
 OU
 https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
+-> Em cada sub-grafo executar DFS e computar as back edges existentes
+    -> Se a root do sub-grafo tiver mais q 1 filho, é um AP
+    -> Se um vértice v tiver um filho que não consiga aceder a um vértice visitado antes de v
+
+Algoritmo recursivo
