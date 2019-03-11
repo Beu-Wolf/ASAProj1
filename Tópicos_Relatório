@@ -1,0 +1,8 @@
+Executar DFS para encontrar sub grafos
+Trabalhar em cada sub grafo e encontrar pontes (arestas) https://cp-algorithms.com/graph/bridge-searching.html
+    -> Vertices da ponte com 1 aresta n vale a pena apagar (a aresta e a ponte e apagar esse vértice não criará mais sub-grafos)
+    -> Vertices com mais q 1 aresta criam mais sub-grafos, pq os outros componentes ligados a ele criam o seu próprio grafo, ou o algoritmo não identificava como ponte
+    -> Qualquer vértice da ponte com mais de 1 aresta e removível.
+
+OU
+https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
