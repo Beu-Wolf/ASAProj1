@@ -28,7 +28,18 @@ int main(){
 
 
     scanf("%d", &V);
+    scanf("%d", &numEdges);
 
+    // fransformar para for(int i = 0; i < numEdges; i++)?
+    int i = 0;
+    while (i < numEdges){ // code to add new edges
+        scanf("%d %d", &src, &dest);
+        src--;
+        dest--;
+        
+        addEdge(src, dest, adjList);
+        i++;
+    }
 
     //vectors needed for DFS / tarjan
     std::vector<int> pi (V, -1);
@@ -41,17 +52,7 @@ int main(){
 
     
 
-    scanf("%d", &numEdges);
 
-    int i = 0;
-    while ( i < numEdges){ // code to add new edges
-        scanf("%d %d", &src, &dest);
-        src--;
-        dest--;
-        
-        addEdge(src, dest, adjList);
-        i++;
-    }
 
     /*for (auto& lst : adjList){
         for(auto node : lst){
@@ -75,7 +76,8 @@ int main(){
 
     printf("\n%d\n",numAPs);
 
-    //delete egdes TO and From
+    // delete egdes TO and From
+    // nao esta ja feito quando adicionamos ao vetor de aps?
 
     //DFS in new graph
 
@@ -134,7 +136,7 @@ int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, s
 
 
 int minimum(int &a, int &b){
-    if ( a < b)
+    if (a < b)
         return a;
     return b;
 }
