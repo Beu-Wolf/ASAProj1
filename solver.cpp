@@ -3,6 +3,7 @@
 #include <string>
 #include <list>
 #include <set>
+#include <map>
 
 /*NOTA IMPORTANTE -> Aprensentar vertices e sempre indice + 1*/
 
@@ -13,11 +14,12 @@ DFS na arvore resultante e encontrar maior subgrafo
 */
 
 
-int Currtime = 0;
+int currTime = 0;
+int numAPs = 0;
 
 
 void addEdge(int src, int dest, std::vector<std::list<int>> &adjList);
-int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, std::vector<bool> &visited,  std::vector<int> &low, std::vector<std::list<int>> &adjList, std::set<int> &artPoints);
+int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, std::vector<bool> &visited,  std::vector<int> &low, std::vector<std::list<int>> &adjList, std::vector<bool> &artPoints);
 int minimum(int &a, int &b);
 
 int main(){
@@ -25,7 +27,7 @@ int main(){
     int V, numEdges, src, dest;
 
 
-    std::cin >> V;
+    scanf("%d", &V);
 
 
     //vectors needed for DFS / tarjan
@@ -35,15 +37,15 @@ int main(){
     std::vector<int> low (V);
     std::vector<std::list<int>> adjList (V);
     std::set<int> subGraphs;
-    std::set<int> artPoints;
+    std::vector<bool> artPoints (V, false);
 
     
 
-    std::cin >> numEdges;
+    scanf("%d", &numEdges);
 
     int i = 0;
     while ( i < numEdges){ // code to add new edges
-        std::cin >> src >> dest;
+        scanf("%d %d", &src, &dest);
         src--;
         dest--;
         
@@ -66,12 +68,12 @@ int main(){
 
     }
 
-    std::cout << subGraphs.size() << "\n";
+    printf("%lu\n", subGraphs.size());
     for (auto sub : subGraphs){
-        std::cout << sub + 1 << " ";
+        printf("%d ", sub +1);
     }
 
-    std::cout << "\n" <<artPoints.size() << "\n";
+    printf("\n%d\n",numAPs);
 
     //delete egdes TO and From
 
@@ -85,13 +87,13 @@ void addEdge(int src, int dest, std::vector<std::list<int>> &adjList){
     adjList[dest].push_back(src);
 }
 
-int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, std::vector<bool> &visited,  std::vector<int> &low, std::vector<std::list<int>> &adjList, std::set<int> &artPoints){
+int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, std::vector<bool> &visited,  std::vector<int> &low, std::vector<std::list<int>> &adjList, std::vector<bool> &artPoints){
     int currBig = vertex;
     int subBig;
     int numChildren = 0;
     visited[vertex] = true;
     
-    discover[vertex] = low[vertex] = Currtime++;
+    discover[vertex] = low[vertex] = currTime++;
 
     std::list<int>::iterator it;
     for (it = adjList[vertex].begin(); it != adjList[vertex].end(); it++){
@@ -109,10 +111,17 @@ int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, s
             
             low[vertex] = minimum(low[vertex], low[*it]);
             if (pi[vertex] == -1 && numChildren > 1){
-                artPoints.insert(vertex);
+                if(artPoints[vertex] == false){
+                    artPoints[vertex] = true;
+                    numAPs++;
+                }
+                
             }
             if (pi[vertex] != -1 && (low[*it] >= discover[vertex])){
-                artPoints.insert(vertex);
+                if(artPoints[vertex] == false){
+                    artPoints[vertex] = true;
+                    numAPs++;
+                }
             }
         } else if (pi[vertex] != *it){
             low[vertex] = minimum(low[vertex], discover[*it]);

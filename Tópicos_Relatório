@@ -25,6 +25,11 @@ Algoritmo recursivo
 
 
 Em cada AP, eliminar ligacoes para ele na lista de adjacencias dos vertices do sub-grafo e as suas proprias ligacoes
+ complexidade (N^2)
+
+OU
+
+Na DSF basta filtrar as arestas para APs e não as visitar
 
 Executar nova DFS para encontrar proximos sub-grafos e guardar o seu tamanho na computacao (incrementar uma variavel)
 
