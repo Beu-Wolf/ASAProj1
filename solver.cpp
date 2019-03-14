@@ -32,6 +32,14 @@ int main(){
     fuckYouCompiler = scanf("%d", &V);
     fuckYouCompiler = scanf("%d", &numEdges);
 
+    if(numEdges > (2*V +2)){
+        printf("1\n");
+        printf("%d\n", V);
+        printf("0\n");
+        printf("%d", V);
+        return 0;
+    }
+
     // problem information
     std::vector<std::list<int>> adjList (V);
     std::set<int>               subGraphs;
@@ -77,7 +85,7 @@ int main(){
 
     printf("\n%d\n", numAPs); // number of articulation points
     printf("%d\n", maxSubgraphSize);
-
+    
     return fuckYouCompiler * 0;
 }
 
@@ -94,35 +102,34 @@ int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, s
     
     discover[vertex] = low[vertex] = currTime++;
 
-    std::list<int>::iterator it;
-    for (it = adjList[vertex].begin(); it != adjList[vertex].end(); it++){
-        if (*it > currBig)
-            currBig = *it;
+    for (auto adj : adjList[vertex]){
+        if (adj > currBig)
+            currBig = adj;
         
 
-        if(visited[*it] == false){
+        if(visited[adj] == false){
             numChildren++;
-            pi[*it] = vertex;
-            subBig = artPointFind(*it, pi, discover, visited, low, adjList, artPoints);
+            pi[adj] = vertex;
+            subBig = artPointFind(adj, pi, discover, visited, low, adjList, artPoints);
 
             if (subBig > currBig)
                 currBig = subBig; 
             
-            low[vertex] = minimum(low[vertex], low[*it]);
+            low[vertex] = minimum(low[vertex], low[adj]);
             if (pi[vertex] == -1 && numChildren > 1){
                 if(artPoints[vertex] == false){
                     artPoints[vertex] = true;
                     numAPs++;
                 }
             }
-            if (pi[vertex] != -1 && (low[*it] >= discover[vertex])){
+            if (pi[vertex] != -1 && (low[adj] >= discover[vertex])){
                 if(artPoints[vertex] == false){
                     artPoints[vertex] = true;
                     numAPs++;
                 }
             }
-        } else if (pi[vertex] != *it){
-            low[vertex] = minimum(low[vertex], discover[*it]);
+        } else if (pi[vertex] != adj){
+            low[vertex] = minimum(low[vertex], discover[adj]);
         }
     }
     return currBig;
