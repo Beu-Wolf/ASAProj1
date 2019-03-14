@@ -21,15 +21,16 @@ int numAPs = 0;
 void addEdge(int src, int dest, std::vector<std::list<int>> &adjList);
 int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, std::vector<bool> &visited,  std::vector<int> &low, std::vector<std::list<int>> &adjList, std::vector<bool> &artPoints);
 int minimum(int &a, int &b);
-int maxSubGraph();
-int subgraphSize(std::vector<int> &adjList, std::vector<bool> &visited, int v) {
+int maxSubGraph(std::vector<std::list<int>> &adjList, std::vector<bool> &visited, std::vector<bool> &artPoints, int V);
+int subgraphSize(std::vector<std::list<int>> &adjList, std::vector<bool> &visited, std::vector<bool> &artPoints, int v);
 
 int main(){
     int V, numEdges, src, dest;
+    int fuckYouCompiler;
 
     // read graph size
-    scanf("%d", &V);
-    scanf("%d", &numEdges);
+    fuckYouCompiler = scanf("%d", &V);
+    fuckYouCompiler = scanf("%d", &numEdges);
 
     // problem information
     std::vector<std::list<int>> adjList (V);
@@ -44,9 +45,10 @@ int main(){
     
     // read edges
     for(int i = 0; i < numEdges; i++) {
-        scanf("%d %d", &src, &dest);
+        fuckYouCompiler = scanf("%d %d", &src, &dest);
         addEdge(--src, --dest, adjList);
     }
+
 
     // DBG: print edges
     /*for (auto& lst : adjList){
@@ -65,7 +67,7 @@ int main(){
     }
 
     // find greatest subgraph (supposing there is no articulation point)
-    int maxSubgraphSize = maxSubgraph(adjList, visited, artPoints);
+    int maxSubgraphSize = maxSubGraph(adjList, visited, artPoints, V);
     
     // OUTPUT:
     printf("%lu\n", subGraphs.size()); // num of subgraphs
@@ -74,8 +76,9 @@ int main(){
     }
 
     printf("\n%d\n", numAPs); // number of articulation points
+    printf("%d\n", maxSubgraphSize);
 
-    return 0;
+    return fuckYouCompiler * 0;
 }
 
 void addEdge(int src, int dest, std::vector<std::list<int>> &adjList){
@@ -111,7 +114,6 @@ int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, s
                     artPoints[vertex] = true;
                     numAPs++;
                 }
-                
             }
             if (pi[vertex] != -1 && (low[*it] >= discover[vertex])){
                 if(artPoints[vertex] == false){
@@ -129,24 +131,23 @@ int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, s
 // return maximum subgraph size
 // using DFS iteration
 // time and pi not needed 
-int maxSubGraph() {
+int maxSubGraph(std::vector<std::list<int>> &adjList, std::vector<bool> &visited, std::vector<bool> &artPoints, int V) {
 	int size, greater = 0;
-	bool t = false, f = true;
-	visited[v] = t;
+	bool f = true;
 	for(int i = 0; i < V; i++)
 		if(visited[i] == f && !artPoints[i])
-			if(size = subgraphSize(i) > greater)
-				greater = size
-	return greater
+			if((size = subgraphSize(adjList, visited, artPoints, i)) > greater)
+				greater = size;
+	return greater;
 }
 
-int subgraphSize(std::vector<int> &adjList, std::vector<bool> &visited, int v) {
+int subgraphSize(std::vector<std::list<int>> &adjList, std::vector<bool> &visited, std::vector<bool> &artPoints, int v) {
 	int size = 1;
 	bool t = false, f = true;
 	visited[v] = t;
 	for(auto adj : adjList[v])
 		if(visited[adj] == f && !artPoints[adj])
-			size += subgraphSize(adj);
+			size += subgraphSize(adjList, visited, artPoints, adj);
 	return size;
 }
 

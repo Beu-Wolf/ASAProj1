@@ -55,3 +55,5 @@ Executar nova DFS para encontrar proximos sub-grafos e guardar o seu tamanho na 
 	// 	if not visited yet (visited = true) && not ap[adj]:
 	// 		size += subgraphSize(adj)
 	// return size
+
+// TODO saber numero de subgrafos automaticamente consoante o numero de arestas
