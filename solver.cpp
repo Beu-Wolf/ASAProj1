@@ -78,9 +78,14 @@ int main(){
     int maxSubgraphSize = maxSubGraph(adjList, visited, artPoints, V);
     
     // OUTPUT:
+    std::set<int>::iterator it = subGraphs.end();
+    --it;
+
     printf("%lu\n", subGraphs.size()); // num of subgraphs
-    for (auto sub : subGraphs){ // subgraph max router id
-        printf("%d ", sub +1);
+    for (auto& sub : subGraphs){ // subgraph max router id
+        printf("%d", sub +1);
+        if(sub != *it)
+            printf(" ");
     }
 
     printf("\n%d\n", numAPs); // number of articulation points
@@ -102,7 +107,7 @@ int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, s
     
     discover[vertex] = low[vertex] = currTime++;
 
-    for (auto adj : adjList[vertex]){
+    for (auto &adj : adjList[vertex]){
         if (adj > currBig)
             currBig = adj;
         
@@ -152,7 +157,7 @@ int subgraphSize(std::vector<std::list<int>> &adjList, std::vector<bool> &visite
 	int size = 1;
 	bool t = false, f = true;
 	visited[v] = t;
-	for(auto adj : adjList[v])
+	for(auto &adj : adjList[v])
 		if(visited[adj] == f && !artPoints[adj])
 			size += subgraphSize(adjList, visited, artPoints, adj);
 	return size;
