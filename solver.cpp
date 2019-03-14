@@ -30,6 +30,16 @@ int main(){
     scanf("%d", &V);
     scanf("%d", &numEdges);
 
+    //vectors needed for DFS / tarjan
+    std::vector<int> pi (V, -1);
+    std::vector<int> discover (V, -1);
+    std::vector<bool> visited (V, false);
+    std::vector<int> low (V);
+    std::vector<std::list<int>> adjList (V);
+    std::set<int> subGraphs;
+    std::vector<bool> artPoints (V, false);
+    
+    
     // fransformar para for(int i = 0; i < numEdges; i++)?
     int i = 0;
     while (i < numEdges){ // code to add new edges
@@ -41,14 +51,6 @@ int main(){
         i++;
     }
 
-    //vectors needed for DFS / tarjan
-    std::vector<int> pi (V, -1);
-    std::vector<int> discover (V, -1);
-    std::vector<bool> visited (V, false);
-    std::vector<int> low (V);
-    std::vector<std::list<int>> adjList (V);
-    std::set<int> subGraphs;
-    std::vector<bool> artPoints (V, false);
 
     
 
