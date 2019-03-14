@@ -21,41 +21,34 @@ int numAPs = 0;
 void addEdge(int src, int dest, std::vector<std::list<int>> &adjList);
 int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, std::vector<bool> &visited,  std::vector<int> &low, std::vector<std::list<int>> &adjList, std::vector<bool> &artPoints);
 int minimum(int &a, int &b);
+int maxSubGraph();
+int subgraphSize(std::vector<int> &adjList, std::vector<bool> &visited, int v) {
 
 int main(){
-
     int V, numEdges, src, dest;
 
-
+    // read graph size
     scanf("%d", &V);
     scanf("%d", &numEdges);
 
-    //vectors needed for DFS / tarjan
-    std::vector<int> pi (V, -1);
-    std::vector<int> discover (V, -1);
-    std::vector<bool> visited (V, false);
-    std::vector<int> low (V);
+    // problem information
     std::vector<std::list<int>> adjList (V);
-    std::set<int> subGraphs;
-    std::vector<bool> artPoints (V, false);
+    std::set<int>               subGraphs;
+    std::vector<bool>           artPoints (V, false);
+
+    // DFS information
+    std::vector<bool>           visited (V, false); // grey color not needed. using boolean
+    std::vector<int>            pi (V, -1);
+    std::vector<int>            low (V);
+    std::vector<int>            discover (V, -1);
     
-    
-    // fransformar para for(int i = 0; i < numEdges; i++)?
-    int i = 0;
-    while (i < numEdges){ // code to add new edges
+    // read edges
+    for(int i = 0; i < numEdges; i++) {
         scanf("%d %d", &src, &dest);
-        src--;
-        dest--;
-        
-        addEdge(src, dest, adjList);
-        i++;
+        addEdge(--src, --dest, adjList);
     }
 
-
-    
-
-
-
+    // DBG: print edges
     /*for (auto& lst : adjList){
         for(auto node : lst){
             std::cout << " to: " << node + 1;
@@ -63,25 +56,24 @@ int main(){
         std::cout << "\n";
     }*/
 
+    // find articulation points (automatically gets greatest subgraph vertex)
     for(int i = 0; i < V; i++){
-        if(visited[i] == false){
+        if(!visited[i]){
             int biggestIndex = artPointFind(i, pi, discover, visited, low, adjList, artPoints);
             subGraphs.insert(biggestIndex);
         }
-
     }
 
-    printf("%lu\n", subGraphs.size());
-    for (auto sub : subGraphs){
+    // find greatest subgraph (supposing there is no articulation point)
+    int maxSubgraphSize = maxSubgraph(adjList, visited, artPoints);
+    
+    // OUTPUT:
+    printf("%lu\n", subGraphs.size()); // num of subgraphs
+    for (auto sub : subGraphs){ // subgraph max router id
         printf("%d ", sub +1);
     }
 
-    printf("\n%d\n",numAPs);
-
-    // delete egdes TO and From
-    // nao esta ja feito quando adicionamos ao vetor de aps?
-
-    //DFS in new graph
+    printf("\n%d\n", numAPs); // number of articulation points
 
     return 0;
 }
@@ -134,8 +126,29 @@ int artPointFind(int vertex, std::vector<int> &pi, std::vector<int> &discover, s
     return currBig;
 }
 
+// return maximum subgraph size
+// using DFS iteration
+// time and pi not needed 
+int maxSubGraph() {
+	int size, greater = 0;
+	bool t = false, f = true;
+	visited[v] = t;
+	for(int i = 0; i < V; i++)
+		if(visited[i] == f && !artPoints[i])
+			if(size = subgraphSize(i) > greater)
+				greater = size
+	return greater
+}
 
-
+int subgraphSize(std::vector<int> &adjList, std::vector<bool> &visited, int v) {
+	int size = 1;
+	bool t = false, f = true;
+	visited[v] = t;
+	for(auto adj : adjList[v])
+		if(visited[adj] == f && !artPoints[adj])
+			size += subgraphSize(adj);
+	return size;
+}
 
 int minimum(int &a, int &b){
     if (a < b)

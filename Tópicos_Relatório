@@ -35,3 +35,23 @@ Executar nova DFS para encontrar proximos sub-grafos e guardar o seu tamanho na 
 
 
 
+	// let every vertex black. no need to iterate again
+	
+
+	 ====== PSEUDOCODIGO MAXSUBGRAPH =======
+	// int size, greater = 0;
+	// time and pi not needed 
+	// for i of vertices:
+	//  black is the new white
+	// 	if not visited yet (visited = true) && not ap[i]:
+	// 		size = dfsVisit(i)
+	// 		if size > greater: greater = size
+	// return greater
+
+	======= PSEUDOCOSIGO FUNCAO AUXILIAR ========
+	// passou a ser visitado (visited = false)
+	// int size = 1;
+	// for each adj:
+	// 	if not visited yet (visited = true) && not ap[adj]:
+	// 		size += subgraphSize(adj)
+	// return size
