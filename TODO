@@ -1,9 +1,9 @@
-tirar var fuckYouCompiler
+ * tirar var fuckYouCompiler
 tentar nao ter de ordenar os subgrafos:
 	fazer dfs a começar pelo fim, para os maiores vertices serem inseridos de certeza por ordem decrescente;
 	imprimir os maiores vertices por ordem inversa, para ficarem logo ordenados
 
 tentar por as veriaveis globais, para nao terem de ser sempre passadas por referencia
-pesquisar teoria de grafos para fazermos o omega(1)
+ * pesquisar teoria de grafos para fazermos o omega(1)
 refactor ao codigo:
-	declarar varias variaveis na mesma linha
+	 * declarar varias variaveis na mesma linha

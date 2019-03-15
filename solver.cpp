@@ -1,8 +1,5 @@
 #include <iostream>
-#include <vector>
-#include <string>
 #include <list>
-#include <set>
 #include <forward_list>
 
 void addEdge(int src, int dest, std::list<int> *adjList);
@@ -20,12 +17,11 @@ int numAPs = 0;
 
 int main(){
     int src, dest, numSubs = 0;
-    int fuckYouCompiler;
     unsigned int V, numEdges;
 
     // read graph size
-    fuckYouCompiler = scanf("%d", &V);
-    fuckYouCompiler = scanf("%d", &numEdges);
+    scanf("%d", &V);
+    scanf("%d", &numEdges);
 
     // graph theory: fully connected graph. impossible to have access points
     if(numEdges == (V*(V-1)/2)){
@@ -53,7 +49,7 @@ int main(){
     
     // read edges
     for(unsigned int i = 0; i < numEdges; i++) {
-        fuckYouCompiler = scanf("%d %d", &src, &dest);
+        scanf("%d %d", &src, &dest);
         addEdge(--src, --dest, adjList);
     }
 
@@ -94,20 +90,13 @@ int main(){
     free(low);
     delete [] adjList;
 
-    return fuckYouCompiler * 0;
+    return 0;
 }
 
-// non directed graph: saving edges on both vertices
-void addEdge(int src, int dest, std::list<int> *adjList){
-    adjList[src].push_back(dest);
-    adjList[dest].push_back(src);
-}
 
 // tarjan algprithm recursive function
 int artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints){
-    int currBig = vertex;
-    int subBig;
-    int numChildren = 0;
+    int numChildren = 0, currBig = vertex, subBig;
 
     visited[vertex] = true;
     discover[vertex] = low[vertex] = currTime++;
@@ -177,8 +166,12 @@ int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, unsign
 	return size;
 }
 
+// non directed graph: saving edges on both vertices
+void addEdge(int src, int dest, std::list<int> *adjList){
+    adjList[src].push_back(dest);
+    adjList[dest].push_back(src);
+}
+
 int minimum(int &a, int &b){
-    if (a < b)
-        return a;
-    return b;
+    return (a < b) ? a : b;
 }
