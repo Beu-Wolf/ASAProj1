@@ -64,3 +64,7 @@ Passámos as coisas por referencia porque para serem globais tinham de ser inici
 Uso de estrutura criou muitos problemas com limites de memoria
 
 Arrays separados e um forward linked list de subgrafos
+
+se fizermos DFS a comecar pelo fim, temos a certeza de que os maiores vertices de cada subgrafo vem ordenados! depois basta imprimi-los ao contrario
+
+
