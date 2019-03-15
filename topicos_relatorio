@@ -1,0 +1,62 @@
+
+
+Estrutura dos subgrafos com listas ligadas e id do maior vertice
+
+Pegar em cada elemento da lista ligada e trabalhar com esses vértices
+
+Trabalhar em cada sub grafo e encontrar pontes (arestas) https://cp-algorithms.com/graph/bridge-searching.html
+    -> Vertices da ponte com 1 aresta n vale a pena apagar (a aresta e a ponte e apagar esse vértice não criará mais sub-grafos)
+    -> Vertices com mais q 1 aresta criam mais sub-grafos, pq os outros componentes ligados a ele criam o seu próprio grafo, ou o algoritmo não identificava como ponte
+    -> Qualquer vértice da ponte com mais de 1 aresta e removível.
+
+Reparamos que este algoritmo não funciona para dadas situacoes (https://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf - Slide 10 - Vertice D não tem nenhuma ponte mas se retirado, aumenta o número de subgrafos)
+por isso mudamos de abordagem
+
+OU
+https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
+https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/
+   Executar DFS para encontrar sub grafos
+    -> Na execucao da DFS de cada que o for para a DFS visit for chamado, estamos na presenca de um novo sub grafo
+    -> Adicionar o maior vertice desse subgrafo ao set (ja mantem ordenado)
+    -> Se a root do sub-grafo tiver mais q 1 filho, é um AP
+    -> Se um vértice v tiver um filho que não consiga aceder a um vértice visitado antes de v
+
+Algoritmo recursivo
+
+
+Em cada AP, eliminar ligacoes para ele na lista de adjacencias dos vertices do sub-grafo e as suas proprias ligacoes
+ complexidade (N^2)
+
+OU
+
+Na DSF basta filtrar as arestas para APs e não as visitar
+
+Executar nova DFS para encontrar proximos sub-grafos e guardar o seu tamanho na computacao (incrementar uma variavel)
+
+
+
+	// let every vertex black. no need to iterate again
+	
+
+	 ====== PSEUDOCODIGO MAXSUBGRAPH =======
+	// int size, greater = 0;
+	// time and pi not needed 
+	// for i of vertices:
+	//  black is the new white
+	// 	if not visited yet (visited = true) && not ap[i]:
+	// 		size = dfsVisit(i)
+	// 		if size > greater: greater = size
+	// return greater
+
+	======= PSEUDOCOSIGO FUNCAO AUXILIAR ========
+	// passou a ser visitado (visited = false)
+	// int size = 1;
+	// for each adj:
+	// 	if not visited yet (visited = true) && not ap[adj]:
+	// 		size += subgraphSize(adj)
+	// return size
+
+// TODO saber numero de subgrafos automaticamente consoante o numero de arestas
+
+
+Passámos as coisas por referencia porque para serem globais tinham de ser inicializadas antes de lermos o V
