@@ -21,21 +21,22 @@ int numAPs = 0;
 void addEdge(int src, int dest, std::list<int> *adjList);
 int artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints);
 int minimum(int &a, int &b);
-int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, int V);
-int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, int v);
+int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int V);
+int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int v);
 
 int main(){
-    int V, numEdges, src, dest, numSubs = 0;
+    int src, dest, numSubs = 0;
     int fuckYouCompiler;
+    unsigned int V, numEdges;
 
     // read graph size
     fuckYouCompiler = scanf("%d", &V);
     fuckYouCompiler = scanf("%d", &numEdges);
 
-    /*if(numEdges == (V*(V-1)/2)){
+    if(numEdges == (V*(V-1)/2)){
         printf("1\n%d\n0\n%d\n", V, V);
         return 0;
-    }*/
+    }
 
     // problem information
     std::forward_list<int> subGraphs;
@@ -54,12 +55,12 @@ int main(){
         return -1;
 
     // initialize data
-    for(int i = 0; i < V; i++){ 
+    for(unsigned int i = 0; i < V; i++){ 
         pi[i] = discover[i] = -1;
     }
     
     // read edges
-    for(int i = 0; i < numEdges; i++) {
+    for(unsigned int i = 0; i < numEdges; i++) {
         fuckYouCompiler = scanf("%d %d", &src, &dest);
         addEdge(--src, --dest, adjList);
     }
@@ -74,7 +75,7 @@ int main(){
     }*/
 
     // find articulation points (gets greatest subgraph vertex)
-    for(int i = 0; i < V; i++){
+    for(unsigned int i = 0; i < V; i++){
         if(!visited[i]){
             int biggestIndex = artPointFind(i, pi, discover, visited, low, adjList, artPoints);
             subGraphs.push_front(biggestIndex);
@@ -100,19 +101,10 @@ int main(){
         it++;
     }
 
-    
-    
-    /*for (auto& sub : subGraphs){ // subgraph max router id
-        printf("%d", sub +1);
-        if(sub != *it)
-            printf(" ");
-    }*/
 
     printf("\n%d\n", numAPs); // number of articulation points
     printf("%d\n", maxSubgraphSize);
     
-    // free(discover);
-    // free(pi);
     free(low);
     delete [] adjList;
 
@@ -168,17 +160,17 @@ int artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, s
 // return maximum subgraph size
 // using DFS iteration
 // time and pi not needed 
-int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, int V){
+int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int V){
 	int size, greater = 0;
 	bool f = true;
-	for(int i = 0; i < V; i++)
+	for(unsigned int i = 0; i < V; i++)
 		if(visited[i] == f && !artPoints[i])
 			if((size = subgraphSize(adjList, visited, artPoints, i)) > greater)
 				greater = size;
 	return greater;
 }
 
-int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, int v){
+int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int v){
 	int size = 1;
 	bool t = false, f = true;
 	visited[v] = t;
