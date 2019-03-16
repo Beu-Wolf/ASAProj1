@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+\usepackage[margin=3cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+\fancyhf{}
+\pagestyle{fancy}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\rfoot{\thepage}
+\lfoot{Afonso Gonçalves, Daniel Seara}
+
+
+\begin{document}
+
+\title{Análise e Síntese de Algoritmos - 1º Projeto}
+\author{Grupo 16 \\ Afonso Gonçalves - 89399 \\ Daniel Seara - 89427}
+\date{}
+\maketitle
+
+
+\thispagestyle{fancy}
+
+
+\section{Introdução}
+
+O primeiro projeto da cadeira de ASA teve como objetivo executar uma auditoria a uma rede. Esta rede poderá estar dividida em sub-redes, 
+sendo que temos de realizar a auditoria a todas elas. Para tal é necessário calcular que routers da rede, ao serem desligados, aumentariam o número de
+sub-redes.\par
+
+O Input é dado com M+2 linhas. A primeira com o número de routers da rede, a segunda com o número (M) de ligações entre routers e as restantes M linhas que 
+representam uma ligação entre 2 routers. Esta ligação é bidireccional, ou seja, uma ligação do router $x$ para o router $y$ implica também de 
+$y$ para $x$.\par
+
+O Output é dado por 4 linhas. Primeiramente, é apresentado o número de sub-redes da rede fornecida. Seguidamente, são apresentados os identificadores de cada 
+uma das sub-redes. Depois, é apresentado o número de routers cuja desconecção levariam a um número maior de sub-redes. Por último, é apresentado o número de routers 
+da maior sub-rede resultante da remoção dos routers que quebram uma sub-rede.\par
+
+
+
+\end{document}
