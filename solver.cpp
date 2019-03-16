@@ -3,7 +3,7 @@
 #include <forward_list>
 
 void addEdge(int src, int dest, std::list<int> *adjList);
-int artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints);
+void artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints);
 int minimum(int &a, int &b);
 int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int V);
 int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int v);
@@ -54,12 +54,17 @@ int main(){
     }
 
     // find articulation points (gets greatest subgraph vertices)
-    for(unsigned int i = 0; i < V; i++){
-        if(!visited[i]){
-            int biggestIndex = artPointFind(i, pi, discover, visited, low, adjList, artPoints);
-            subGraphs.push_front(biggestIndex);
+    unsigned int u = V-1;
+    while(u >= 0){
+        if(!visited[u]){
+            //int biggestIndex = 
+            artPointFind(u, pi, discover, visited, low, adjList, artPoints);
+            subGraphs.push_front(u);
             numSubs++;
         }
+        if(u == 0)
+            break;
+        u--;
     }
 
     // find greatest subgraph (supposing there is no articulation point)
@@ -69,7 +74,6 @@ int main(){
     printf("%d\n", numSubs);
 
     // subgraphs max vertices
-    subGraphs.sort();
     std::forward_list<int>::iterator it = subGraphs.begin();
 
     printf("%d", *it + 1);
@@ -95,23 +99,18 @@ int main(){
 
 
 // tarjan algprithm recursive function
-int artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints){
-    int numChildren = 0, currBig = vertex, subBig;
+void artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints){
+    int numChildren = 0;
 
     visited[vertex] = true;
     discover[vertex] = low[vertex] = currTime++;
 
     for (auto &adj : adjList[vertex]){
-        if (adj > currBig)
-            currBig = adj;
         
         if(visited[adj] == false){
             numChildren++;
             pi[adj] = vertex;
-            subBig = artPointFind(adj, pi, discover, visited, low, adjList, artPoints);
-
-            if (subBig > currBig)
-                currBig = subBig; 
+            artPointFind(adj, pi, discover, visited, low, adjList, artPoints);
             
             low[vertex] = minimum(low[vertex], low[adj]);
 
@@ -138,7 +137,6 @@ int artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, s
     }
 
     // greatest 
-    return currBig;
 }
 
 // find max subgraph size, using DFS (time and pi not needed to this goal)
