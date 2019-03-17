@@ -1,12 +1,11 @@
 #include <iostream>
-#include <list>
 #include <forward_list>
 
-void addEdge(int src, int dest, std::list<int> *adjList);
-void artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints);
+void addEdge(int src, int dest, std::forward_list<int> *adjList);
+void artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::forward_list<int> *adjList, bool *artPoints);
 int minimum(int &a, int &b);
-int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int V);
-int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int v);
+int maxSubGraph(std::forward_list<int> *adjList, bool *visited, bool *artPoints, unsigned int V);
+int subgraphSize(std::forward_list<int> *adjList, bool *visited, bool *artPoints, unsigned int v);
 
 // global variables for Tarjan algorithm
 // other variables must be initialized after reading input
@@ -30,7 +29,7 @@ int main(){
     }
 
     // problem information
-    std::list<int> *adjList = new std::list<int>[V]; // graph itself
+    std::forward_list<int> *adjList = new std::forward_list<int>[V]; // graph itself
     std::forward_list<int> subGraphs; // storing greatest subgraph index
     bool artPoints[V] = {false}; // array to check if vertex is AP using O(1)
 
@@ -99,7 +98,7 @@ int main(){
 
 
 // tarjan algprithm recursive function
-void artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::list<int> *adjList, bool *artPoints){
+void artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, std::forward_list<int> *adjList, bool *artPoints){
     int numChildren = 0;
 
     visited[vertex] = true;
@@ -140,7 +139,7 @@ void artPointFind(int vertex, int *pi, int *discover, bool *visited,  int *low, 
 }
 
 // find max subgraph size, using DFS (time and pi not needed to this goal)
-int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int V){
+int maxSubGraph(std::forward_list<int> *adjList, bool *visited, bool *artPoints, unsigned int V){
 	int size, greater = 0;
 
 	// at this point all vertices are visited. using this variable to switch bool
@@ -154,7 +153,7 @@ int maxSubGraph(std::list<int> *adjList, bool *visited, bool *artPoints, unsigne
 }
 
 // recursive function for maxSubGraph
-int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, unsigned int v){
+int subgraphSize(std::forward_list<int> *adjList, bool *visited, bool *artPoints, unsigned int v){
 	int size = 1;
 	bool t = false, f = true;
 	visited[v] = t;
@@ -165,9 +164,9 @@ int subgraphSize(std::list<int> *adjList, bool *visited, bool *artPoints, unsign
 }
 
 // non directed graph: saving edges on both vertices
-void addEdge(int src, int dest, std::list<int> *adjList){
-    adjList[src].push_back(dest);
-    adjList[dest].push_back(src);
+void addEdge(int src, int dest, std::forward_list<int> *adjList){
+    adjList[src].push_front(dest);
+    adjList[dest].push_front(src);
 }
 
 int minimum(int &a, int &b){
