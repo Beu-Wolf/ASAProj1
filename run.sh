@@ -1,7 +1,9 @@
 #!/bin/bash
 
-g++ solver.cpp
+echo Compiling...
+g++ -std=c++11 -O3 -Wall solver.cpp -lm
 
+echo Running tests...
 for i in {1..9}
 do
 	echo "======= Test #${i} ======="
@@ -9,6 +11,7 @@ do
 	diff tmp inputs/$i.out | grep real
 done
 
+echo Cleaning up...
 rm tmp
-
 rm a.out
+echo Done. Exiting...
