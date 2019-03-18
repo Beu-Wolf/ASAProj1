@@ -42,8 +42,49 @@ O Output é dado por 4 linhas. Primeiramente, é apresentado o número de sub-re
 uma das sub-redes. Depois, é apresentado o número de routers cuja desconecção levariam a um número maior de sub-redes. Por último, é apresentado o número de routers 
 da maior sub-rede resultante da remoção dos routers que quebram uma sub-rede.\par
 
-encontrar os pontos de articulacao de um grafo \footnote{https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
-}
+\section{Descrição da Solução}
+
+
+    % Linguagem utilizada
+    Decidimos usar a linguagem C++ para a resolução deste problema,
+    por ser uma linguagem eficiente, por ter uma boa biblioteca de estruturas de dados 
+    que consideramos necessário e ainda por constituir um desafio começar a trabalhar 
+    com uma nova linguagem, tão usada e potente nos dias de hoje.
+
+    % Contrução da Solução
+    \bigskip
+    Identificámos que este problema pode ser resolvido como um problema de grafos:
+    Cada router é representado por um vértice e as ligações entre estes pelas respetivas 
+    arestas. Os routers que podem quebrar a rede são os vértices de corte ($AP$)
+    do grafo e as sub-redes os seus subgrafos.
+    \par
+    Começámos por desenhar um algoritmo que identificava as pontes do grafo, uma vez
+    que, removendo pelo menos um dos vértices onde esse arco incide, criaríamos novos 
+    subgrafos. Teríamos especial atenção aos vértices que apenas tivessem uma aresta,
+    pois a sua remoção não aumentaria o número de subgrafos. Esta abordagem não contempla
+    os vértices de articulação que não formam pontes (Figura 1), por isso mudámos de estratégia.
+    \par
+    Em aula teórica e com alguma pesquisa na internet
+    %TODO: fazer referência bibliográfica
+    \footnote{https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/}
+    \footnote{https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/}
+    , aprendemos que o algoritmo de 
+    Tarjan permite encontrar os $AP$'s dos grafos. Como esse algoritmo executa uma DFS, 
+    seria possível calcular simultaneamente o número de sub-redes do grafo. Para além disso,
+    ao visitar cada subgrafo de uma vez, conseguimos também saber o maior ID que lhe pertence.
+    \par
+    Numa nova iteração do algoritmo, passámos a percorrer os vértices por ordem decrescente de 
+    ID, uma vez que estes serão os maiores do respetivo subgrafo. Deste modo, obtemos ainda os 
+    ID's máximos de cada subgrafo por ordem decrescente, não sendo necessário ordená-los.
+    \par
+    Para calcular o número de vértices do maior subgrafo resultante da 
+    remoção de todos os vértices críticos encontrados, começámos por  
+    remover todos os $AP$'s e as suas arestas e executar uma DFS.
+    Rapidamente nos apercebemos que seria uma solução demasiado cara para o efeito: O uso de uma
+    flag que indicasse em tempo constante se um vértice é um $AP$ permite ignorá-lo durante a DFS,
+    como se tivesse sido removido.
+    \par
+    % TODO: FALAR DO GRAFO 100% LIGADO PARA O CASO OMEGA(1)
 
 
 
