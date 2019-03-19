@@ -18,9 +18,8 @@ int main(){
     int src, dest, numSubs = 0;
     unsigned int V, numEdges;
 
-    // read graph size
-    scanf("%d", &V);
-    scanf("%d", &numEdges);
+    // read #V and #E
+    scanf("%d\n%d", &V, &numEdges);
 
     // graph theory: fully connected graph. impossible to have access points
     if(numEdges == (V*(V-1)/2)){
