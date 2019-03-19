@@ -30,20 +30,21 @@
 \thispagestyle{fancy}
 
 
-\section{Introdução}
-    \par
-    O primeiro projeto da cadeira de ASA teve como objetivo executar uma auditoria a uma rede. Esta rede poderá estar dividida em sub-redes, 
-    sendo que temos de realizar a auditoria a todas elas. Para tal é necessário calcular que routers da rede, ao serem desligados, aumentariam o número de
-    sub-redes.
-    \par
-    O Input é dado com M+2 linhas. A primeira com o número de routers da rede, a segunda com o número (M) de ligações entre routers e as restantes M linhas que 
-    representam uma ligação entre 2 routers. Esta ligação é bidireccional, ou seja, uma ligação do router $x$ para o router $y$ implica também de 
-    $y$ para $x$.
-    \par
-    O Output é dado por 4 linhas. Primeiramente, é apresentado o número de sub-redes da rede fornecida. Seguidamente, são apresentados os identificadores de cada 
-    uma das sub-redes. Depois, é apresentado o número de routers cuja desconecção levariam a um número maior de sub-redes. Por último, é apresentado o número de routers 
-    da maior sub-rede resultante da remoção dos routers que quebram uma sub-rede.
 
+\section{Introdução
+    O primeiro projeto da cadeira de ASA teve como objetivo executar uma auditoria a uma 
+    rede. Esta rede poderá estar dividida em sub-redes, sendo que temos de realizar a 
+    auditoria a todas elas. Para tal é necessário calcular que routers da rede, ao serem 
+    desligados, aumentariam o número de sub-redes.
+    \par
+    O Input é dado com M+2 linhas. A primeira indica o número de routers da rede, a segunda 
+    o número de ligações entre eles (M) e as restantes representam as ligações (bidirecionais) 
+    entre estes, indicando os IDs dos routers em causa.
+    \par
+    O Output é constituìdo por 4 linhas com, respetivamente, o número de sub-redes da
+    rede fornecida, uma sequência ordenada do maior ID de cada subrede, o número de routers 
+    que quebram a sub-rede e o número da maior sub-rede formada pela remoção desses routers.
+    \par
 \section{Descrição da Solução}
     % Linguagem utilizada
     \par
@@ -65,10 +66,7 @@
     pois a sua remoção não aumentaria o número de subgrafos. Esta abordagem não contempla
     os vértices de articulação que não formam pontes, por isso mudámos de estratégia.
     \par
-    Em aula teórica e com alguma pesquisa na internet
-    %TODO: fazer referência bibliográfica
-    \footnote{https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/}
-    \footnote{https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/}
+    Em aula teórica e com alguma pesquisa na internet\cite{geeksforgeeks, hackerearth}
     , aprendemos que o algoritmo de 
     Tarjan permite encontrar os $AP$'s dos grafos. Como esse algoritmo executa uma DFS, 
     seria possível calcular simultaneamente o número de sub-redes do grafo. Para além disso,
@@ -128,15 +126,26 @@
     \end{itemize}
 
 
-    \section{Demonstração de Resultados}
-    O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibilizados.
+\section{Demonstração de Resultados}
+O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibilizados.
+%Para efetuarmos eficientemente o algoritmo precisámos de guardar flags informativas para os 
+%vértices. Como eles têm id's numéricos, essas informações podem ser guardadas em vetores e 
+%diretamente acedidas, com um baixo custo de memória (a informação teria de ser guardada de 
+%qualquer das maneiras). Preferimos guardar esses vetores na stack, para não termos de 
+%efetuar chamadas de sistema, que são mais lentas. Contudo, para inputs muito grandes, a 
+%stack não é suficientemente grande, pelo que tivemos de guardar um desses vetores na heap, 
+%usando a chamada de sistema malloc.
 
 
-    %Para efetuarmos eficientemente o algoritmo precisámos de guardar flags informativas para os 
-    %vértices. Como eles têm id's numéricos, essas informações podem ser guardadas em vetores e 
-    %diretamente acedidas, com um baixo custo de memória (a informação teria de ser guardada de 
-    %qualquer das maneiras). Preferimos guardar esses vetores na stack, para não termos de 
-    %efetuar chamadas de sistema, que são mais lentas. Contudo, para inputs muito grandes, a 
-    %stack não é suficientemente grande, pelo que tivemos de guardar um desses vetores na heap, 
-    %usando a chamada de sistema malloc.
+\begin{thebibliography}{9}        
+    \bibitem{geeksforgeeks} 
+    Articulation Points (or Cut Vertices) in a Graph
+    \\\texttt{https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/}
+
+    \bibitem{hackerearth} 
+    Articulation Points and Bridges
+    \\\texttt{https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/}
+
+\end{thebibliography}
+
 \end{document}
