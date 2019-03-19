@@ -53,17 +53,15 @@ int main(){
     }
 
     // find articulation points (gets greatest subgraph vertices)
-    unsigned int u = V-1;
-    while(u >= 0){
+    // u is unsigned, so --0 > 0
+    unsigned int u = V;
+    while(u > 0) {
+        u--;
         if(!visited[u]){
-            //int biggestIndex = 
             artPointFind(u, pi, discover, visited, low, adjList, artPoints);
             subGraphs.push_front(u);
             numSubs++;
         }
-        if(u == 0)
-            break;
-        u--;
     }
 
     // find greatest subgraph (supposing there is no articulation point)
