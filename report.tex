@@ -4,6 +4,8 @@
 \usepackage{indentfirst}
 \usepackage{amsmath}
 \usepackage{fancyhdr}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 
 \fancyhf{}
 \pagestyle{fancy}
@@ -29,40 +31,39 @@
 
 
 \section{Introdução}
-
-O primeiro projeto da cadeira de ASA teve como objetivo executar uma auditoria a uma rede. Esta rede poderá estar dividida em sub-redes, 
-sendo que temos de realizar a auditoria a todas elas. Para tal é necessário calcular que routers da rede, ao serem desligados, aumentariam o número de
-sub-redes.\par
-
-O Input é dado com M+2 linhas. A primeira com o número de routers da rede, a segunda com o número (M) de ligações entre routers e as restantes M linhas que 
-representam uma ligação entre 2 routers. Esta ligação é bidireccional, ou seja, uma ligação do router $x$ para o router $y$ implica também de 
-$y$ para $x$.\par
-
-O Output é dado por 4 linhas. Primeiramente, é apresentado o número de sub-redes da rede fornecida. Seguidamente, são apresentados os identificadores de cada 
-uma das sub-redes. Depois, é apresentado o número de routers cuja desconecção levariam a um número maior de sub-redes. Por último, é apresentado o número de routers 
-da maior sub-rede resultante da remoção dos routers que quebram uma sub-rede.\par
+    \par
+    O primeiro projeto da cadeira de ASA teve como objetivo executar uma auditoria a uma rede. Esta rede poderá estar dividida em sub-redes, 
+    sendo que temos de realizar a auditoria a todas elas. Para tal é necessário calcular que routers da rede, ao serem desligados, aumentariam o número de
+    sub-redes.
+    \par
+    O Input é dado com M+2 linhas. A primeira com o número de routers da rede, a segunda com o número (M) de ligações entre routers e as restantes M linhas que 
+    representam uma ligação entre 2 routers. Esta ligação é bidireccional, ou seja, uma ligação do router $x$ para o router $y$ implica também de 
+    $y$ para $x$.
+    \par
+    O Output é dado por 4 linhas. Primeiramente, é apresentado o número de sub-redes da rede fornecida. Seguidamente, são apresentados os identificadores de cada 
+    uma das sub-redes. Depois, é apresentado o número de routers cuja desconecção levariam a um número maior de sub-redes. Por último, é apresentado o número de routers 
+    da maior sub-rede resultante da remoção dos routers que quebram uma sub-rede.
 
 \section{Descrição da Solução}
-
-
     % Linguagem utilizada
+    \par
     Decidimos usar a linguagem C++ para a resolução deste problema,
     por ser uma linguagem eficiente, por ter uma boa biblioteca de estruturas de dados 
     que consideramos necessário e ainda por constituir um desafio começar a trabalhar 
     com uma nova linguagem, tão usada e potente nos dias de hoje.
 
     % Contrução da Solução
-    \bigskip
+    \par
     Identificámos que este problema pode ser resolvido como um problema de grafos:
     Cada router é representado por um vértice e as ligações entre estes pelas respetivas 
     arestas. Os routers que podem quebrar a rede são os vértices de corte ($AP$)
     do grafo e as sub-redes os seus subgrafos.
-    \par
+    \par\bigskip
     Começámos por desenhar um algoritmo que identificava as pontes do grafo, uma vez
     que, removendo pelo menos um dos vértices onde esse arco incide, criaríamos novos 
     subgrafos. Teríamos especial atenção aos vértices que apenas tivessem uma aresta,
     pois a sua remoção não aumentaria o número de subgrafos. Esta abordagem não contempla
-    os vértices de articulação que não formam pontes (Figura 1), por isso mudámos de estratégia.
+    os vértices de articulação que não formam pontes, por isso mudámos de estratégia.
     \par
     Em aula teórica e com alguma pesquisa na internet
     %TODO: fazer referência bibliográfica
@@ -83,11 +84,59 @@ da maior sub-rede resultante da remoção dos routers que quebram uma sub-rede.\
     Rapidamente nos apercebemos que seria uma solução demasiado cara para o efeito: O uso de uma
     flag que indicasse em tempo constante se um vértice é um $AP$ permite ignorá-lo durante a DFS,
     como se tivesse sido removido.
+    
+    % teoria de grafos
+    \par\bigskip
+    Com base na teoria de Grafos, sabemos também que é impossível para um grafo completo ter 
+    $AP$'s. Desse modo, qualquer grafo com $V$ vértices e 
+    \begin{small}$\dfrac{V(V-1)}{2}$\end{small} arestas
+    terá necessariamente um subgrafo com ID igual a V e não terá pontos de articulação
+    (pela natureza do problema, supomos que não há mais do que uma aresta entre dois vértices
+    nem arestas de um vértice para si próprio).
+\section{Estruturas de dados empregues}
     \par
-    % TODO: FALAR DO GRAFO 100% LIGADO PARA O CASO OMEGA(1)
+    Como neste algoritmo apenas será preciso inserir arestas e iterar por todas as 
+    adjacências dos vértices (sem procura), optámos por poupar em memória e representar o 
+    grafo usando um array de listas simplesmente ligadas ($\textbf{std::forward\_list\textless int\textgreater*}$). 
+    Para minimizar a complexidade, a inserção de novas arestas será sempre feita no início e a 
+    iteração do início para o fim.
+    \par
+    Visto que cada vértice tem um ID, é possível haver acesso à informação necessária para a 
+    execução do algoritmo em tempo constante se ela for guardada em array. Preferimos guardar 
+    esses arrays na stack porque a alocação e o acesso a essa memória são mais rápidos. 
+    Contudo, para inputs muito grandes, obtivemos $Segmentation Fault$, pelo que um desses 
+    arrays teve de ser guardado na heap.
+    
+\section{Algoritmo}
+\section{Análise Teórica} 
+    O nosso algoritmo tem complexidade linear, com pior caso \textit{$O(V+E)$} 
+    e melhor caso \textit{$\Omega$(1)}:
+    \begin{itemize}
+        \item Inicialização das estruturas: \textit{O(V)}
+        \item \textbf{addEdge():} \textit{O(1)}
+        \item \textbf{Ciclo While com artPointFind():} \textit{O(V+E)}
+        \begin{itemize}
+            \item \textbf{minimum():} \textit{O(1)}
+            \item Acesso a índices: \textit{O(1)}
+            \item \textbf{list.push\_front():} \textit{O(1)}
+        \end{itemize}
+        \item \textbf{maxSubGraph():} \textit{O(V+E)}
+        \begin{itemize}
+            \item \textbf{subGraphSize():} \textit{O(V+E)}
+        \end{itemize}
+        \item Impressão dos resultados: \textit{O(V)}
+    \end{itemize}
 
 
+    \section{Demonstração de Resultados}
+    O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibilizados.
 
 
-
+    %Para efetuarmos eficientemente o algoritmo precisámos de guardar flags informativas para os 
+    %vértices. Como eles têm id's numéricos, essas informações podem ser guardadas em vetores e 
+    %diretamente acedidas, com um baixo custo de memória (a informação teria de ser guardada de 
+    %qualquer das maneiras). Preferimos guardar esses vetores na stack, para não termos de 
+    %efetuar chamadas de sistema, que são mais lentas. Contudo, para inputs muito grandes, a 
+    %stack não é suficientemente grande, pelo que tivemos de guardar um desses vetores na heap, 
+    %usando a chamada de sistema malloc.
 \end{document}
