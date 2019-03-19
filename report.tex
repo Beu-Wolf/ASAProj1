@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{fancyhdr}
 \usepackage{algorithm}
+\usepackage{graphicx}
 \usepackage[noend]{algpseudocode}
 
 \fancyhf{}
@@ -31,7 +32,7 @@
 
 
 
-\section{Introdução
+\section{Introdução}
     O primeiro projeto da cadeira de ASA teve como objetivo executar uma auditoria a uma 
     rede. Esta rede poderá estar dividida em sub-redes, sendo que temos de realizar a 
     auditoria a todas elas. Para tal é necessário calcular que routers da rede, ao serem 
@@ -105,8 +106,7 @@
     Contudo, para inputs muito grandes, obtivemos $Segmentation Fault$, pelo que um desses 
     arrays teve de ser guardado na heap.
     
-\section{Algoritmo}
-\section{Análise Teórica} 
+\section{Algoritmo \& Análise Teórica} 
     O nosso algoritmo tem complexidade linear, com pior caso \textit{$O(V+E)$} 
     e melhor caso \textit{$\Omega$(1)}:
     \begin{itemize}
@@ -127,7 +127,14 @@
 
 
 \section{Demonstração de Resultados}
-O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibilizados.
+O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibilizados. Apresentamos aqui o gráfico de distibuição de 50 testes com número de vértices entre
+os 10000 e os 600000 e o seu tempo de execução. Daqui se prova a linearidade da nossa solução.
+
+\begin{figure}[h]
+\includegraphics[scale=0.5]{images/VandEGraph}
+\centering
+\end{figure}
+
 %Para efetuarmos eficientemente o algoritmo precisámos de guardar flags informativas para os 
 %vértices. Como eles têm id's numéricos, essas informações podem ser guardadas em vetores e 
 %diretamente acedidas, com um baixo custo de memória (a informação teria de ser guardada de 
@@ -136,16 +143,17 @@ O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibili
 %stack não é suficientemente grande, pelo que tivemos de guardar um desses vetores na heap, 
 %usando a chamada de sistema malloc.
 
-
+\renewcommand\refname{Referências}
 \begin{thebibliography}{9}        
     \bibitem{geeksforgeeks} 
     Articulation Points (or Cut Vertices) in a Graph
-    \\\texttt{https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/}
+    \\\texttt{https://www.geeksforgeeks.org/\\
+    articulation-points-or-cut-vertices-in-a-graph/}
 
     \bibitem{hackerearth} 
     Articulation Points and Bridges
-    \\\texttt{https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/}
-
+    \\\texttt{https://www.hackerearth.com/\\
+    practice/algorithms/graphs/articulation-points-and-bridges/tutorial/}
 \end{thebibliography}
 
 \end{document}
