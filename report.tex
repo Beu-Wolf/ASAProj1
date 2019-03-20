@@ -7,6 +7,9 @@
 \usepackage{algorithm}
 \usepackage{graphicx}
 \usepackage[noend]{algpseudocode}
+\usepackage{multicol,lipsum}
+\usepackage{enumitem}
+\setlist{nolistsep}
 
 \fancyhf{}
 \pagestyle{fancy}
@@ -14,7 +17,7 @@
 
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{1pt}
-\renewcommand\footnoterule{}
+\renewcommand{\footnoterule}{}
 
 \rfoot{\thepage}
 \lfoot{Afonso Gonçalves, Daniel Seara}
@@ -109,31 +112,149 @@
 \section{Algoritmo \& Análise Teórica} 
     O nosso algoritmo tem complexidade linear, com pior caso \textit{$O(V+E)$} 
     e melhor caso \textit{$\Omega$(1)}:
-    \begin{itemize}
-        \item Inicialização das estruturas: \textit{O(V)}
-        \item \textbf{addEdge():} \textit{O(1)}
-        \item \textbf{Ciclo While com artPointFind():} \textit{O(V+E)}
-        \begin{itemize}
-            \item \textbf{minimum():} \textit{O(1)}
-            \item Acesso a índices: \textit{O(1)}
-            \item \textbf{list.push\_front():} \textit{O(1)}
-        \end{itemize}
-        \item \textbf{maxSubGraph():} \textit{O(V+E)}
-        \begin{itemize}
-            \item \textbf{subGraphSize():} \textit{O(V+E)}
-        \end{itemize}
+    \vspace{1em}
+    \begin{enumerate}
+        \setlength\itemsep{0.2em}
+        \item Ler \#$V$ \#$E$ 
+        \item If \#E = $\dfrac{\#V(\#V-1)}{2}$: then Output()
+        \item LerGrafo()
+        \item For each u in V
+        \begin{enumerate}
+            \setlength\itemsep{0.2em}
+            \item If não visitado
+            \begin{itemize}
+                \setlength\itemsep{0.2em}
+                \item Incrementa número de subgrafos e guarda u
+                \item Explora(u)
+            \end{itemize}
+        \end{enumerate}
+        \item maxSubgraphSize()
         \item Impressão dos resultados: \textit{O(V)}
-    \end{itemize}
+    \end{enumerate}
+
+    \vspace{1em}
+
+    \textbf{Explora(u)}
+    \begin{enumerate}
+        \setlength\itemsep{0.2em}
+        \item Inicialização das estruturas de informação
+        \item For each v in Adj[u]
+        \begin{enumerate}
+            \setlength\itemsep{0.2em}
+            \item If v não visitado
+            \begin{itemize}
+                \setlength\itemsep{0.2em}
+                \item Incrementa filhos de u e pai v = u 
+                \item Explora(v)
+                \item Atualiza low[u]
+                \item If u é raiz e número de filhos maior que 1 ou u não raiz e descoberta de u menor ou igual a low de v
+                \begin{itemize}
+                    \setlength\itemsep{0.2em}
+                    \item u é AP
+                \end{itemize}
+            \end{itemize}
+            \item Else se v não é pai de u
+            \begin{itemize}
+                \setlength\itemsep{0.2em}
+                \item atualiza low[u]
+            \end{itemize}
+        \end{enumerate}
+    \end{enumerate}
+
+    \vspace{1em}
+
+    \textbf{maxSubgraphSize(V)}
+    \begin{enumerate}
+        \setlength\itemsep{0.2em}
+        \item For each v in V
+        \begin{enumerate}
+            \item If v não visitado e v não AP
+            \begin{enumerate}
+                \setlength\itemsep{0.2em}
+                \item If subgraphSize(v) maior que greater
+                \begin{itemize}
+                    \setlength\itemsep{0.2em}
+                    \item atualiza greater
+                \end{itemize}
+            \end{enumerate}   
+        \end{enumerate}
+        \item return greater
+    \end{enumerate}
+
+    \vspace{1em}
+
+    \textbf{subgraphSize(u)}
+    \begin{enumerate}
+        \setlength\itemsep{0.2em}
+        \item visited[u] = true
+        \item For each v in Adj[u]
+        \begin{enumerate}
+            \setlength\itemsep{0.2em}
+            \item If v não visitado e v não AP
+            \begin{itemize}
+                \setlength\itemsep{0.2em}
+                \item size += subgraphSize(v)
+            \end{itemize}
+        \end{enumerate}
+        \item return size
+    \end{enumerate}
+
 
 
 \section{Demonstração de Resultados}
-O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibilizados. Apresentamos aqui o gráfico de distibuição de 50 testes com número de vértices entre
+O nosso algoritmo passa em todos os 16 testes propostos e nos testes disponibilizados. Apresentamos aqui o gráfico de distibuição de 50 testes com número de vértices mais arestas entre
 os 10000 e os 600000 e o seu tempo de execução. Daqui se prova a linearidade da nossa solução.
 
 \begin{figure}[h]
 \includegraphics[scale=0.5]{images/VandEGraph}
 \centering
 \end{figure}
+
+É de notar que apesar de 1 ponto ter tido um tempo de execução fora no normal, todos os outros testes seguem uma distribuição linear.
+Apresentamos aqui alguns resultados concretos:
+\par
+
+\begin{multicols}{2}
+    \textbf{Vértices:} 72111\par
+    \textbf{Arestas:} 71403\par
+    \textbf{SubGrafos:} 1060\par
+    \textbf{Tempo:} 0.04s\par
+    
+    \vspace{1em}
+    
+    \textbf{Vértices:} 176712\par
+    \textbf{Arestas:} 173663\par
+    \textbf{SubGrafos:} 4621\par
+    \textbf{Tempo:} 0.08s\par
+
+    \vspace{1em}
+
+    \textbf{Vértices:} 301250\par
+    \textbf{Arestas:} 297963\par
+    \textbf{SubGrafos:} 4899\par
+    \textbf{Tempo:} 0.17s\par
+
+    \vspace{1em}
+
+    \textbf{Vértices:} 437923\par
+    \textbf{Arestas:} 433496\par
+    \textbf{SubGrafos:} 6552\par
+    \textbf{Tempo:} 0.27s\par
+
+    \vspace{1em}
+
+    \textbf{Vértices:} 547066\par
+    \textbf{Arestas:} 544644\par
+    \textbf{SubGrafos:} 3619\par
+    \textbf{Tempo:} 0.35s\par
+
+    \vspace{1em}
+
+    \textbf{Vértices:} 603836\par
+    \textbf{Arestas:} 601467\par
+    \textbf{SubGrafos:} 3504\par
+    \textbf{Tempo:} 0.39s\par
+\end{multicols}
 
 %Para efetuarmos eficientemente o algoritmo precisámos de guardar flags informativas para os 
 %vértices. Como eles têm id's numéricos, essas informações podem ser guardadas em vetores e 
